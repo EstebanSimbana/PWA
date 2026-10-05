@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">UNITASK</title>
+  <desc id="desc">Icono azul y verde de una lista de tareas academicas.</desc>
+  <rect width="128" height="128" rx="24" fill="#1d4ed8"/>
+  <path d="M33 32h62a9 9 0 0 1 9 9v46a9 9 0 0 1-9 9H33a9 9 0 0 1-9-9V41a9 9 0 0 1 9-9Z" fill="#ffffff"/>
+  <path d="M43 52l8 8 17-19" fill="none" stroke="#0f766e" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M77 49h15M43 80h49" fill="none" stroke="#172033" stroke-width="8" stroke-linecap="round"/>
+</svg>

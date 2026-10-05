@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="UNITASK es una PWA academica sencilla para gestionar tareas, validar formularios y trabajar sin conexion."
+    />
+    <meta name="theme-color" content="#1d4ed8" />
+    <title>UNITASK | Gestor academico PWA</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+
+    <header class="app-header">
+      <nav class="topbar" aria-label="Navegacion principal">
+        <a class="brand" href="#" aria-label="UNITASK inicio">
+          <img src="icons/icon.svg" width="42" height="42" alt="" />
+          <span>UNITASK</span>
+        </a>
+        <div class="network-status" id="networkStatus" role="status" aria-live="polite">
+          Verificando conexion
+        </div>
+      </nav>
+
+      <section class="intro" aria-labelledby="titulo-app">
+        <div>
+          <p class="eyebrow">PWA academica offline</p>
+          <h1 id="titulo-app">Organiza tus tareas sin perder el ritmo.</h1>
+          <p>
+            Crea, valida, filtra y conserva actividades academicas en el navegador. La app aplica
+            HTML semantico, CSS adaptable, JavaScript moderno, DOM, almacenamiento local y cache
+            offline.
+          </p>
+        </div>
+        <aside class="summary-panel" aria-labelledby="resumen-titulo">
+          <h2 id="resumen-titulo">Resumen</h2>
+          <dl class="summary-list">
+            <div>
+              <dt>Total</dt>
+              <dd id="totalCount">0</dd>
+            </div>
+            <div>
+              <dt>Pendientes</dt>
+              <dd id="pendingCount">0</dd>
+            </div>
+            <div>
+              <dt>Completadas</dt>
+              <dd id="doneCount">0</dd>
+            </div>
+          </dl>
+        </aside>
+      </section>
+    </header>
+
+    <main id="contenido" class="app-shell">
+      <section class="task-form-section" aria-labelledby="form-title">
+        <div class="section-heading">
+          <p class="eyebrow">Nueva actividad</p>
+          <h2 id="form-title">Registrar tarea</h2>
+        </div>
+
+        <form id="taskForm" novalidate aria-describedby="formHelp">
+          <p id="formHelp" class="form-help">
+            Los campos marcados con asterisco son obligatorios. La informacion se guarda en tu
+            navegador.
+          </p>
+
+          <div class="field-grid">
+            <div class="field">
+              <label for="title">Titulo *</label>
+              <input
+                id="title"
+                name="title"
+                type="text"
+                minlength="3"
+                maxlength="80"
+                required
+                autocomplete="off"
+                aria-describedby="titleHint titleError"
+              />
+              <small id="titleHint">Minimo 3 caracteres.</small>
+              <span class="error-message" id="titleError" role="alert"></span>
+            </div>
+
+            <div class="field">
+              <label for="subject">Materia *</label>
+              <input
+                id="subject"
+                name="subject"
+                type="text"
+                minlength="2"
+                maxlength="50"
+                required
+                autocomplete="organization-title"
+                aria-describedby="subjectHint subjectError"
+              />
+              <small id="subjectHint">Ejemplo: Desarrollo en plataformas.</small>
+              <span class="error-message" id="subjectError" role="alert"></span>
+            </div>
+
+            <div class="field">
+              <label for="dueDate">Fecha limite *</label>
+              <input
+                id="dueDate"
+                name="dueDate"
+                type="date"
+                required
+                aria-describedby="dateHint dateError"
+              />
+              <small id="dateHint">Debe ser hoy o una fecha futura.</small>
+              <span class="error-message" id="dateError" role="alert"></span>
+            </div>
+
+            <fieldset class="field priority-field" aria-describedby="priorityError">
+              <legend>Prioridad *</legend>
+              <label>
+                <input type="radio" name="priority" value="alta" required />
+                Alta
+              </label>
+              <label>
+                <input type="radio" name="priority" value="media" checked />
+                Media
+              </label>
+              <label>
+                <input type="radio" name="priority" value="baja" />
+                Baja
+              </label>
+              <span class="error-message" id="priorityError" role="alert"></span>
+            </fieldset>
+
+            <div class="field field-wide">
+              <label for="description">Descripcion</label>
+              <textarea
+                id="description"
+                name="description"
+                rows="4"
+                maxlength="180"
+                aria-describedby="descriptionHint"
+              ></textarea>
+              <small id="descriptionHint">Opcional, maximo 180 caracteres.</small>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="button button-primary" type="submit">Agregar tarea</button>
+            <button class="button button-secondary" type="reset">Limpiar</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="task-board" aria-labelledby="tasks-title">
+        <div class="section-heading task-board-heading">
+          <div>
+            <p class="eyebrow">Seguimiento</p>
+            <h2 id="tasks-title">Mis tareas</h2>
+          </div>
+
+          <div class="toolbar" aria-label="Filtros de tareas">
+            <label for="filterState">Estado</label>
+            <select id="filterState">
+              <option value="all">Todas</option>
+              <option value="pending">Pendientes</option>
+              <option value="done">Completadas</option>
+            </select>
+
+            <label for="filterPriority">Prioridad</label>
+            <select id="filterPriority">
+              <option value="all">Todas</option>
+              <option value="alta">Alta</option>
+              <option value="media">Media</option>
+              <option value="baja">Baja</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="status-line" id="statusLine" role="status" aria-live="polite">
+          Lista preparada.
+        </div>
+
+        <div class="task-list" id="taskList" aria-live="polite"></div>
+
+        <template id="emptyTemplate">
+          <article class="empty-state">
+            <h3>No hay tareas para mostrar</h3>
+            <p>Registra una actividad o cambia los filtros actuales.</p>
+          </article>
+        </template>
+      </section>
+
+      <section class="criteria-section" aria-labelledby="criteria-title">
+        <div class="section-heading">
+          <p class="eyebrow">Criterios aplicados</p>
+          <h2 id="criteria-title">Relacion con los conceptos revisados</h2>
+        </div>
+        <ul class="criteria-list">
+          <li><strong>HTML5:</strong> estructura semantica, landmarks y formulario accesible.</li>
+          <li><strong>CSS3:</strong> diseno mobile-first con Grid, Flexbox y media queries.</li>
+          <li><strong>JavaScript ES6+:</strong> const, let, funciones flecha, objetos y try/catch.</li>
+          <li><strong>DOM y eventos:</strong> render dinamico, delegacion y validacion en tiempo real.</li>
+          <li><strong>PWA:</strong> manifest, service worker, cache offline y persistencia local.</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>UNITASK guarda datos simples en localStorage para mantener la app ligera y offline.</p>
+    </footer>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
